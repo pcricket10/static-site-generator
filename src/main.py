@@ -23,7 +23,7 @@ def main():
 
     print("Generating page...")
     generate_pages_recursive(
-        content_path, template_path, public_path, basepath="/")
+        content_path, template_path, public_path, basepath)
 
 
 main()
