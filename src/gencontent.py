@@ -8,7 +8,6 @@ def generate_page(from_path, template_path, dest_path):
         f"Generating page from {from_path} to {dest_path} using {template_path}")
     markdown_file_contents = ""
     template_file_contents = ""
-    html_string = ""
     if os.path.exists(from_path):
         with open(from_path) as f:
             markdown_file_contents = f.read()
@@ -32,3 +31,20 @@ def extract_title(markdown):
             stripped_line = line[2:].strip()
             return stripped_line
     raise Exception("no h1 header")
+
+
+def generate_pages_recursive(dir_path_content, template_path, dest_dir_path):
+    if not os.path.exists(dest_dir_path):
+        os.mkdir(dest_dir_path)
+    dir_list = os.listdir(dir_path_content)
+    if dir_list == []:
+        return
+    for item in dir_list:
+        source_path = os.path.join(dir_path_content, item)
+        destination_path = os.path.join(dest_dir_path, item)
+        if os.path.isdir(source_path):
+            generate_pages_recursive(
+                source_path, template_path, destination_path)
+        elif os.path.isfile(source_path):
+            generate_page(source_path,
+                          template_path, destination_path[:-2] + "html")
